@@ -3,7 +3,7 @@
   "sources": [
     {
       "dir": "src",
-      "subdirs": ["components", "controllers"]
+      "subdirs": ["bindings", "components", "controllers"]
     }
   ],
   "bs-dependencies": [

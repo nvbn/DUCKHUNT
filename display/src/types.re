@@ -15,5 +15,6 @@ type state = {
   gameStatus,
   ducks: list (duck),
   shooting: bool,
-  score: int
+  score: int,
+  code: string
 };

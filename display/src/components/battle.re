@@ -1,3 +1,5 @@
+open Types;
+
 [%bs.raw {|require('./styles.css')|}];
 
 let component = ReasonReact.statelessComponent("Battle");
@@ -6,7 +8,7 @@ let make = (~ducks, ~score, ~shooting, _children) => {
   ...component,
   render: (_self) => {
     let placedDucks = ducks  |> List.map(duck =>
-      <Duck shooting=shooting duck=duck />
+      <Duck shooting=shooting duck=duck key=duck.id />
     );
 
     <div className="display">

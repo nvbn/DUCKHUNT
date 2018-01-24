@@ -49,5 +49,4 @@ html, body, .display {
 
 .duck img {
   width: 200px;
-  -webkit-filter: drop-shadow(10px 5px 10px red);
 }
