@@ -5,11 +5,12 @@ type duck = {x: int, y: int, id: string, direction};
 type gameStatus = NotStarted | Active | Finished;
 
 type action =
+  | Init
   | Tick
   | StartGame
   | StartShooting
   | Kill(string)
-  | Miss;
+  | StopShooting;
 
 type state = {
   gameStatus,

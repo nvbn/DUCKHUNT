@@ -3,6 +3,8 @@ open UUID;
 
 let component = ReasonReact.reducerComponent("App");
 
+let firebase = Firebase.initializeApp(Config.firebase);
+
 let getDucks = () => {
   let width = Browser.getWidth();
   let height = Browser.getHeight();
@@ -15,25 +17,41 @@ let getDucks = () => {
   ]
 };
 
+let waitForStart = (send, code) =>
+  "game/" ++ code ++ "/start" |> Firebase.onIntValue((value) => if (value > 0) send(StartGame));
+
+let handleShooting = (send, code) => 
+  "game/" ++ code ++ "/shooting" |> Firebase.onIntValue((value) =>
+    if (value == 1) send(StartShooting)
+    else if (value == 0) send(StopShooting)
+  );
+
+let handleKills = (send, code) =>
+  "game/" ++ code ++ "/kill" |> Firebase.onStringValue((value) => send(Kill(value)));
+
 let make = (_children) => {
   ...component,
 
   initialState: () => {
-    gameStatus: Active,
-    ducks: getDucks(),
+    gameStatus: NotStarted,
+    ducks: [],
     code: uuid(),
     shooting: false,
     score: 0
   },
 
   didMount: ({send}) => {
-    Js.Global.setInterval(() => Browser.requestAnimationFrame(() => send(Tick)), 50);
+    Js.Global.setInterval(() => Browser.requestAnimationFrame(() => send(Tick)), 50) |> ignore;
+
+    send(Init);
 
     ReasonReact.NoUpdate
   },
 
   reducer: (action : action, state : state) =>
     switch(action) {
+    | Init => ReasonReact.SideEffects(({send}) => state.code |> waitForStart(send))
+
     | Tick => if (state.gameStatus == Active && !state.shooting) {
         let ducks = state.ducks |> List.map(duck => 
           switch (duck.direction) {
@@ -57,11 +75,14 @@ let make = (_children) => {
         ReasonReact.NoUpdate
       }
 
-    | StartGame => ReasonReact.Update({
+    | StartGame => ReasonReact.UpdateWithSideEffects({
       ...state,
       gameStatus: Active,
       score: 0,
       ducks: getDucks()
+    }, ({send}) => {
+      state.code |> handleShooting(send);
+      state.code |> handleKills(send);
     })
 
     | StartShooting => ReasonReact.Update({...state, shooting: true})
@@ -69,16 +90,15 @@ let make = (_children) => {
     | Kill(duckId) => {
       let ducks = state.ducks |> List.filter(duck => duck.id != duckId);
       let score = state.score + 25;
-      let shooting = false;
 
       if (ducks |> List.length == 0) {
-        ReasonReact.Update({...state, gameStatus: Finished, shooting, score, ducks})  
+        ReasonReact.Update({...state, gameStatus: Finished, score, ducks})  
       } else {
-        ReasonReact.Update({...state, shooting, score, ducks})
+        ReasonReact.Update({...state, score, ducks})
       }
     }
 
-    | Miss => ReasonReact.Update({...state, shooting: false})
+    | StopShooting => ReasonReact.Update({...state, shooting: false})
     },
 
   render: ({state}) => {
