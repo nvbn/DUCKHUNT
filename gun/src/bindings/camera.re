@@ -1,8 +1,8 @@
-[@bs.module "expo"] external button : ReasonReact.reactClass = "Camera";
+[@bs.module "expo"] external camera : ReasonReact.reactClass = "Camera";
 
-let make = (~style=?, ~onBarCodeRead=?, ~cameraType=?, ~ratio=?, ~zoom=?) =>
+let make = (~style=?, ~onBarCodeRead=?, ~cameraType=?, ~ratio=?, ~zoom=?, ~torchMode=?) =>
   ReasonReact.wrapJsForReason(
-    ~reactClass=button,
+    ~reactClass=camera,
     ~props=
       Js.Undefined.(
         {
@@ -10,7 +10,8 @@ let make = (~style=?, ~onBarCodeRead=?, ~cameraType=?, ~ratio=?, ~zoom=?) =>
           "style": from_opt(style),
           "type": from_opt(cameraType),
           "ratio": from_opt(ratio),
-          "zoom": from_opt(zoom)
+          "zoom": from_opt(zoom),
+          "torchMode": from_opt(torchMode)
         }
       )
   );

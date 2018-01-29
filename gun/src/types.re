@@ -1,9 +1,22 @@
-type gameStatus = NotStarted | Active | Finished;
+type gameStatus = NotStarted | Loading | Active | Finished;
 
 type action = 
-  | Init;
+  | Init
+  | WaitCamera
+  | StartGame(string)
+  | StartShooting
+  | StopShooting
+  | Shot(string);
 
 type state = {
   gameStatus,
-  cameraReady: bool
+  cameraReady: bool,
+  code: string,
+  shooting: bool
+};
+
+type barcode = {
+  .
+  "type": string,
+  "data": string
 };
