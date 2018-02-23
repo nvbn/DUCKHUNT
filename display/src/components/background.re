@@ -1,14 +1,12 @@
 open Pixi;
 
 type t = {
-  bottom: Container.t,
-  top: Container.t,
   container: Container.t,
   filter: Filters.AlphaFilter.t,
   mutable filterValues: list(int),
 };
 
-let generate = (width, height) => {
+let createLayer = (width, height) => {
   let container = Container.create();
   for (x in 0 to width / 70 + 1) {
     for (y in 0 to height / 70 + 1) {
@@ -21,30 +19,33 @@ let generate = (width, height) => {
   container;
 };
 
-let make = (~width, ~height) => {
-  let top = generate(width, height);
-  let bottom = generate(width, height);
-  Container.setX(top, 10);
-  let filterValues = Lodash.range(0, 100, 5) @ Lodash.range(100, 0, -5);
-  Js.log(filterValues);
+let createFilter = filterValues => {
   let filter = Filters.AlphaFilter.create();
   let alpha =
-    List.length(filterValues)
-    - 1
-    |> List.nth(filterValues)
-    |> Browser.parseFloat;
-  Filters.AlphaFilter.setAlpha(filter, alpha /. 100.);
-  Container.setFilters(top, [filter]);
+    List.length(filterValues) - 1 |> List.nth(filterValues) |> float_of_int;
+  alpha /. 100. |> Filters.AlphaFilter.setAlpha(filter);
+  filter;
+};
+
+let create = (width, height) => {
   let container = Container.create();
-  Container.addChild(container, bottom);
-  Container.addChild(container, top);
-  {bottom, top, filterValues, container, filter};
+  createLayer(width, height) |> Container.addChild(container) |> ignore;
+  let top = createLayer(width, height) |> Container.addChild(container);
+  Container.setX(top, 10);
+  let filterValues = Lodash.range(0, 100, 5) @ Lodash.range(100, 0, -5);
+  let filter = createFilter(filterValues);
+  [filter] |> Container.setFilters(top);
+  {filterValues, container, filter};
 };
 
 let update = (background, _state, tick) =>
   if (tick mod 4 != 0) {
-    let [current, ...rest] = background.filterValues;
-    background.filterValues = List.append(rest, [current]);
-    let alpha = Browser.parseFloat(current) /. 100.;
-    Filters.AlphaFilter.setAlpha(background.filter, alpha);
+    switch (background.filterValues) {
+    | [current, ...rest] =>
+      background.filterValues = List.append(rest, [current]);
+      float_of_int(current)
+      /. 100.
+      |> Filters.AlphaFilter.setAlpha(background.filter);
+    | _ => ()
+    };
   };

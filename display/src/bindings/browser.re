@@ -1,1 +1,0 @@
-[@bs.val] external parseFloat : 'any => float = "parseFloat";

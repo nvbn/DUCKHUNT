@@ -18,9 +18,9 @@ switch (body) {
 | None => Js.log("Can't start app!")
 };
 
-let background = Background.make(~width, ~height);
+let background = Background.create(width, height);
 
-Container.addChild(app |> Application.stage, background.container);
+background.container |> Container.addChild(app |> Application.stage) |> ignore;
 
 let tick = ref(0);
 
@@ -29,4 +29,4 @@ let update = () => {
   tick := tick^ + 1;
 };
 
-Js.Global.setInterval(update, 50) |> ignore;
+Js.Global.setInterval(update, 20) |> ignore;

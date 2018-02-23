@@ -27,7 +27,8 @@ module Sprite = {
 module Container = {
   type t;
   [@bs.new] [@bs.module "pixi.js"] external create : unit => t = "Container";
-  [@bs.send] external addChild : (t, 'displayObject) => unit = "addChild";
+  [@bs.send]
+  external addChild : (t, 'displayObject) => 'displayObject = "addChild";
   [@bs.set] external setX : (t, int) => unit = "x";
   [@bs.set] external setY : (t, int) => unit = "y";
   [@bs.set] external setFilters : (t, list('filter)) => unit = "filters";
