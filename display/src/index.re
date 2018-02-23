@@ -20,7 +20,14 @@ switch (body) {
 
 let background = Background.create(width, height);
 
-background.container |> Container.addChild(app |> Application.stage) |> ignore;
+app |> Application.stage |> Container.addChild(background.container) |> ignore;
+
+let initLabel = () => {
+  let label = Label.create("DUCKHUNT", 20, 30, "64px");
+  app |> Application.stage |> Container.addChild(label);
+};
+
+Js.Global.setTimeout(initLabel, 1000);
 
 let tick = ref(0);
 

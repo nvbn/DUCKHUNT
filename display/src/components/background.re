@@ -13,7 +13,7 @@ let createLayer = (width, height) => {
       let sprite = Sprite.fromImage("/water.png");
       Sprite.setX(sprite, x * 70);
       Sprite.setY(sprite, y * 70);
-      Container.addChild(container, sprite);
+      container |> Container.addChild(sprite);
     };
   };
   container;
@@ -29,8 +29,10 @@ let createFilter = filterValues => {
 
 let create = (width, height) => {
   let container = Container.create();
-  createLayer(width, height) |> Container.addChild(container) |> ignore;
-  let top = createLayer(width, height) |> Container.addChild(container);
+  let bottom = createLayer(width, height);
+  container |> Container.addChild(bottom);
+  let top = createLayer(width, height);
+  container |> Container.addChild(top);
   Container.setX(top, 10);
   let filterValues = Lodash.range(0, 100, 5) @ Lodash.range(100, 0, -5);
   let filter = createFilter(filterValues);

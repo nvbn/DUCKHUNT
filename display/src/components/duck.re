@@ -25,8 +25,10 @@ let createFilter = filterValues => {
 
 let create = id => {
   let container = Container.create();
-  let top = createDuck() |> Container.addChild(container);
-  let bottom = createDuck() |> Container.addChild(container);
+  let top = createDuck();
+  container |> Container.addChild(top);
+  let bottom = createDuck();
+  container |> Container.addChild(bottom);
   [
     `BlurFilter(Filters.BlurFilter.create()),
     `AlphaFilter(Filters.AlphaFilter.create()),
@@ -37,4 +39,4 @@ let create = id => {
   {id, top, bottom, filter, filterValues};
 };
 
-let update = (background, _state, tick) => {};
+let update = (_background, _state, _tick) => ();

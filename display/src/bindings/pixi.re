@@ -13,6 +13,16 @@ module Filters = {
   };
 };
 
+module Text = {
+  type t;
+  [@bs.new] [@bs.module "pixi.js"]
+  external create : (string, 'style) => t = "Text";
+  [@bs.set] external setX : (t, int) => unit = "x";
+  [@bs.set] external setY : (t, int) => unit = "y";
+  [@bs.set] external setFilters : (t, list('filter)) => unit = "filters";
+  [@bs.set] external setText : (t, string) => unit = "text";
+};
+
 module Sprite = {
   type t;
   [@bs.scope "Sprite"] [@bs.val] [@bs.module "pixi.js"]
@@ -27,8 +37,7 @@ module Sprite = {
 module Container = {
   type t;
   [@bs.new] [@bs.module "pixi.js"] external create : unit => t = "Container";
-  [@bs.send]
-  external addChild : (t, 'displayObject) => 'displayObject = "addChild";
+  [@bs.send.pipe: t] external addChild : 'displayObject => unit = "addChild";
   [@bs.set] external setX : (t, int) => unit = "x";
   [@bs.set] external setY : (t, int) => unit = "y";
   [@bs.set] external setFilters : (t, list('filter)) => unit = "filters";
