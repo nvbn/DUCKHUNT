@@ -24,10 +24,14 @@ app |> Application.stage |> Container.addChild(background.container) |> ignore;
 
 let initLabel = () => {
   let label = Label.create("DUCKHUNT", 20, 30, "64px");
-  app |> Application.stage |> Container.addChild(label);
+  app |> Application.stage |> Container.addChild(label.container);
 };
 
 Js.Global.setTimeout(initLabel, 1000);
+
+let code = Qrcode.create("Test", 100, 100, 300);
+
+app |> Application.stage |> Container.addChild(code.container);
 
 let tick = ref(0);
 

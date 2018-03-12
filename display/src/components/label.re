@@ -16,5 +16,5 @@ let create = (txt, x, y, size) => {
   container |> Container.addChild(text);
   Text.setX(text, x);
   Text.setY(text, y);
-  container;
+  {container: container};
 };
