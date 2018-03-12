@@ -35,5 +35,4 @@ let update = () => {
   Background.update(background, (), tick^);
   tick := tick^ + 1;
 };
-
-Js.Global.setInterval(update, 20) |> ignore;
+/* Js.Global.setInterval(update, 20) |> ignore; */

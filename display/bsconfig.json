@@ -10,13 +10,8 @@
     }
   ],
   "bs-dependencies": [
-    "reason-react",
-    "bs-webapi",
-    "bs-jest"
+    "bs-webapi"
   ],
-  "reason": {
-    "react-jsx": 2
-  },
   "bsc-flags": [
     "-bs-super-errors"
   ],

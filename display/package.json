@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "bs-webapi": "^0.8.2",
+    "bs-webapi": "^0.8.3",
     "firebase": "^4.9.0",
     "lodash": "^4.17.5",
     "pixi-particles": "^2.1.9",
     "pixi.js": "^4.7.0",
-    "qr.js": "^0.0.0",
+    "qrious": "^4.0.2",
+    "reason": "3.1.0",
     "reason-scripts": "0.8.0",
     "uuid": "^3.2.1"
   },
@@ -16,11 +17,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "prepare": "npm link bs-platform"
+    "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "bs-jest": "^0.3.2",
-    "reason-react": "^0.3.1"
+    "bs-platform": "^2.2.2"
   }
 }
