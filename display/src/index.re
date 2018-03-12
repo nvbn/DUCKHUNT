@@ -22,16 +22,12 @@ let background = Background.create(width, height);
 
 app |> Application.stage |> Container.addChild(background.container) |> ignore;
 
-let initLabel = () => {
-  let label = Label.create("DUCKHUNT", 20, 30, "64px");
-  app |> Application.stage |> Container.addChild(label.container);
+let init = () => {
+  let start = Start.create("sessin");
+  app |> Application.stage |> Container.addChild(start.container);
 };
 
-Js.Global.setTimeout(initLabel, 1000);
-
-let code = Qrcode.create("Test", 100, 100, 300);
-
-app |> Application.stage |> Container.addChild(code.container);
+Js.Global.setTimeout(init, 1000);
 
 let tick = ref(0);
 
@@ -39,4 +35,5 @@ let update = () => {
   Background.update(background, (), tick^);
   tick := tick^ + 1;
 };
-/* Js.Global.setInterval(update, 20) |> ignore; */
+
+Js.Global.setInterval(update, 50) |> ignore;

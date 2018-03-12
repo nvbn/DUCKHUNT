@@ -5,7 +5,8 @@
       "dir": "src",
       "subdirs": [
         "bindings",
-        "components"
+        "components",
+        "screens"
       ]
     }
   ],
